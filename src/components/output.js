@@ -1,5 +1,5 @@
 import React from "react";
-import ListGroup from "react-bootstrap/ListGroup"
+import ListGroup from "react-bootstrap/ListGroup";
 
 var opList = ["div", "add", "sub", "mul"];
 var ops = product(opList, 3);
@@ -141,16 +141,19 @@ function is24(map) {
 
 const result = props => {
   var output = null;
-
+  var ans = is24(props.num);
   if (props.showState) {
-    output = (
-
-      <ListGroup variant="flush">
-      {is24(props.num).map((x,index) => (
-          <ListGroup.Item key = {index}>{x}</ListGroup.Item>
-        ))}
-    </ListGroup>
-    );
+    if (ans.length === 0) {
+      output = <h6>Yikes. I can't find a solution!</h6>;
+    } else {
+      output = (
+        <ListGroup variant="flush">
+          {is24(props.num).map((x, index) => (
+            <ListGroup.Item key={index}>{x}</ListGroup.Item>
+          ))}
+        </ListGroup>
+      );
+    }
   }
 
   return <div>{output}</div>;

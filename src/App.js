@@ -24,8 +24,21 @@ class App extends Component {
     var bool = this.state.showAns;
     this.setState({ showAns: !bool });
   };
+  randomNumberGenerator = () =>{
+    let numList = {...this.state.numbers}
+    for (var key in numList){
+      numList[key] = Math.round(Math.random() * 13);
+    }
+    this.setState({numbers:numList});
+  }
+
 
   render() {
+    let action = "Show Answer";
+    if(this.state.showAns){
+      action = "Conceal Answer";
+    }
+
     return (
       <div className="App">
         <h1 style = {this.buttonStyle}>Game 24</h1>
@@ -33,8 +46,8 @@ class App extends Component {
           numbers={this.state.numbers}
           changed={index => this.numberHandler(index)}
         />
-        <Button variant="primary" onClick={this.showAnsHandler} style={this.buttonStyle}>Toggle Answer</Button>
-        {/* <button onClick={this.showAnsHandler}>Toggle Answer</button> */}
+        <Button variant = "success" onClick = {this.randomNumberGenerator}>Random</Button>
+        <Button variant="primary" onClick={this.showAnsHandler} style={this.buttonStyle}>{action}</Button>
         <Result num={this.state.numbers} showState={this.state.showAns} />
       </div>
     );
