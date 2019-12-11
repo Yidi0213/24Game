@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "bcae59cefa79ba5243623547b5c28a2f",
+    "revision": "ab6e367e45e176feaaf66dd9558ffe7f",
     "url": "/24Game/index.html"
   },
   {
-    "revision": "07dfe7238127629f9cd9",
+    "revision": "ecd3adf56dca4a3173d8",
     "url": "/24Game/static/css/2.17e5ed98.chunk.css"
   },
   {
-    "revision": "f7943337417c80ef644b",
+    "revision": "02e78be155ec5f5f277d",
     "url": "/24Game/static/css/main.d710d4ce.chunk.css"
   },
   {
-    "revision": "07dfe7238127629f9cd9",
-    "url": "/24Game/static/js/2.8f03ddb5.chunk.js"
+    "revision": "ecd3adf56dca4a3173d8",
+    "url": "/24Game/static/js/2.edd7f6b9.chunk.js"
   },
   {
     "revision": "f032203ca460334c00de541c30a6078a",
-    "url": "/24Game/static/js/2.8f03ddb5.chunk.js.LICENSE"
+    "url": "/24Game/static/js/2.edd7f6b9.chunk.js.LICENSE"
   },
   {
-    "revision": "f7943337417c80ef644b",
-    "url": "/24Game/static/js/main.3f8ef2db.chunk.js"
+    "revision": "02e78be155ec5f5f277d",
+    "url": "/24Game/static/js/main.92e6e823.chunk.js"
   },
   {
     "revision": "e0dd458e97d20bb3e6c3",
