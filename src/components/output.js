@@ -1,17 +1,11 @@
 import React from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 
-var opList = ["div", "add", "sub", "mul"];
-var ops = product(opList, 3);
-var opMap = { add: "+", sub: "-", mul: "x", div: "/" };
-
-var opFunc = {
-  add: (a, b) => a + b,
-  sub: (a, b) => a - b,
-  mul: (a, b) => a * b,
-  div: (a, b) => a / b
-};
-
+/**
+ * return a list of permutations, given that repetition is allowed.
+ * @param {a list of elements to be grouped} iterables 
+ * @param {the size of the products} repeat 
+ */
 function product(iterables, repeat) {
   var argv = Array.prototype.slice.call(arguments),
     argc = argv.length;
@@ -36,6 +30,22 @@ function product(iterables, repeat) {
   );
 }
 
+var opList = ["div", "add", "sub", "mul"];
+var ops = product(opList, 3);
+var opMap = { add: "+", sub: "-", mul: "x", div: "/" };
+
+var opFunc = {
+  add: (a, b) => a + b,
+  sub: (a, b) => a - b,
+  mul: (a, b) => a * b,
+  div: (a, b) => a / b
+};
+
+
+/**
+ * get rid of same elements in the list.
+ * @param {a list contains repeated elements} list 
+ */
 function uniqueList(list) {
   let ans = [];
   for (var l of list) {
@@ -47,9 +57,13 @@ function uniqueList(list) {
   return ans.map(x => JSON.parse(x));
 }
 
+
+/**
+ * taken into the consideration of numbers' order
+ * @param {a list of operations} inputArr 
+ */
 const permutator = inputArr => {
   let result = [];
-
   const permute = (arr, m = []) => {
     if (arr.length === 0) {
       result.push(m);
@@ -68,9 +82,11 @@ const permutator = inputArr => {
 };
 
 function is24(map) {
+  var middle2 = [];
   var numList = [];
   var n1, n2, n3, n4;
   var ans = [];
+
   for (var key in map) {
     numList.push(parseFloat(map[key]));
   }
@@ -80,58 +96,43 @@ function is24(map) {
     for (var op of ops) {
       var op1, op2, op3, opFunc1, opFunc2, opFunc3;
       var result = 0;
-      [op1, op2, op3] = op;
-      opFunc1 = opFunc[op1];
-      opFunc2 = opFunc[op2];
-      opFunc3 = opFunc[op3];
+      var firstNum, secondNum, numStr;
+      [op1, op2, op3] = op;   //a list of ops name
+      [opFunc1,opFunc2,opFunc3] = op.map(x=>opFunc[x]); //a list of ops function
 
-      result = opFunc3(opFunc2(opFunc1(n1, n2), n3), n4);
-      if (result === 24) {
-        ans.push(
-          "((" +
-            n1 +
-            opMap[op1] +
-            n2 +
-            ")" +
-            opMap[op2] +
-            n3 +
-            ")" +
-            opMap[op3] +
-            n4
-        );
+      // ((n1 op1 n2) op2 n3) op3 n4
+      var expression1 = (num1=n1,num2=n2,num3=n3,num4=n4,opr1=op1,opr2=op2,opr3=op3) => `((${num1}${opMap[opr1]}${num2})${opMap[opr2]}${num3})${opMap[opr3]}${num4}`;
+      firstNum = opFunc1(n1, n2);
+      secondNum = opFunc2(firstNum,n3);
+      result = opFunc3(secondNum,n4);
+      // result = opFunc3(opFunc2(opFunc1(n1, n2), n3), n4);
+      // console.log(firstNum.toString()+"\\"+secondNum.toString());
+      numStr = firstNum.toString()+"\\"+secondNum.toString()
+      if (result === 24 && middle2.indexOf(numStr)===-1) {
+        middle2.push(numStr);
+        ans.push(expression1());
       }
 
+      //(n1 op1 (n2 op2 (n3 op3 n4)))
+      var expression2 = (num1=n1,num2=n2,num3=n3,num4=n4,opr1=op1,opr2=op2,opr3=op3) =>`${num1}${opMap[opr1]}(${num2}${opMap[opr2]}(${num3}${opMap[opr3]}${num4}))`
+      firstNum = opFunc3(n3, n4);
+      secondNum = opFunc2(n2,firstNum);
       result = opFunc1(n1, opFunc2(n2, opFunc3(n3, n4)));
-      if (result === 24) {
-        ans.push(
-          n1 +
-            opMap[op1] +
-            "(" +
-            n2 +
-            opMap[op2] +
-            "(" +
-            n3 +
-            opMap[op3] +
-            n4 +
-            "))"
-        );
+      numStr = firstNum.toString()+"\\"+secondNum.toString();
+      if (result === 24 && middle2.indexOf(numStr)===-1) {
+        middle2.push(numStr);
+        ans.push(expression2());
       }
 
-      result = opFunc2(opFunc1(n1, n2), opFunc3(n3, n4));
-      if (result === 24) {
-        ans.push(
-          "(" +
-            n1 +
-            opMap[op1] +
-            n2 +
-            ")" +
-            opMap[op2] +
-            "(" +
-            n3 +
-            opMap[op3] +
-            n4 +
-            ")"
-        );
+      //(n1 op1 n2) op2 (n3 op3 n4)
+      var expression3 = (num1=n1,num2=n2,num3=n3,num4=n4,opr1=op1,opr2=op2,opr3=op3) => `(${num1}${opMap[opr1]}${num2})${opMap[opr2]}(${num3}${opMap[opr3]}${num4})`
+      firstNum = opFunc1(n1, n2);
+      secondNum = opFunc3(n3,n4);
+      result = opFunc2(firstNum,secondNum);
+      // result = opFunc2(opFunc1(n1, n2), opFunc3(n3, n4));
+      if (result === 24&&middle2.indexOf(numStr)===-1) {
+        middle2.push(numStr);
+        ans.push(expression3());
       }
     }
   }
@@ -148,7 +149,7 @@ const result = props => {
     } else {
       output = (
         <ListGroup variant="flush">
-          {is24(props.num).map((x, index) => (
+          {ans.map((x, index) => (
             <ListGroup.Item key={index}>{x}</ListGroup.Item>
           ))}
         </ListGroup>

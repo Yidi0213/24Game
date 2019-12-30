@@ -8,11 +8,18 @@ import Button from "react-bootstrap/Button";
 
 class App extends Component {
   state = { numbers: { 1: 0, 2: 0, 3: 0, 4: 0 }, showAns: false };
+
   buttonStyle = {
     padding: "5px",
     margin: "15px"
   }
 
+
+  /**
+   * 
+   * @param {*} num: the index of the number to be changed
+   * return a lambda function that will update the number
+   */
   numberHandler(num) {
     return event => {
       let numList = { ...this.state.numbers };
@@ -20,14 +27,23 @@ class App extends Component {
       this.setState({ numbers: numList });
     };
   }
+
+
+  /**
+   * a lambda function that toggle the answer
+   */
   showAnsHandler = () => {
     var bool = this.state.showAns;
     this.setState({ showAns: !bool });
   };
+  
+  /**
+   * a lambda function that will randomly choose four numbers ranging from 1 to 13 
+   */
   randomNumberGenerator = () =>{
     let numList = {...this.state.numbers}
     for (var key in numList){
-      numList[key] = Math.round(Math.random() * 13);
+      numList[key] = Math.round(Math.random() * 12) + 1;
     }
     this.setState({numbers:numList});
   }
